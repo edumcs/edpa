@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-	const int MAX_NUMBER_OF_CASHIERS = 1000;
+	const int MAX_NUMBER_OF_CASHIERS = 10000;
 	
     int cashierTimeToProcess[MAX_NUMBER_OF_CASHIERS];
     int cashierPriority[MAX_NUMBER_OF_CASHIERS];

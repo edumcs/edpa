@@ -11,8 +11,8 @@ struct Node
 // Min Heap
 struct MinHeap
 {
-    unsigned size;
-    unsigned capacity;
+    int size;
+    int capacityMax;
     struct Node **array;
 };
  
@@ -27,14 +27,14 @@ struct Node* newNode(int timeToProcess, int val)
     return temp;
 }
  
-struct MinHeap* initMinHeap(unsigned capacity)
+struct MinHeap* initMinHeap(int capacityMax)
 {
     struct MinHeap* minHeap =
          (struct MinHeap*) malloc(sizeof(struct MinHeap));
-    minHeap->size = 0;  // current size is 0
-    minHeap->capacity = capacity;
+    minHeap->size = 0;
+    minHeap->capacityMax = capacityMax;
     minHeap->array =
-     (struct Node**)malloc(minHeap->capacity * sizeof(struct Node*));
+     (struct Node**)malloc(minHeap->capacityMax * sizeof(struct Node*));
     return minHeap;
 }
 
