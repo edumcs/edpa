@@ -68,12 +68,7 @@ void promoteDemote(struct MinHeap* minHeap, int idx)
     }
 }
  
-int isSizeOne(struct MinHeap* minHeap)
-{
-    return (minHeap->size == 1);
-}
- 
-// A utility function to insert a new node to Min Heap
+// Inserir um novo nó
 void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
 {
     ++minHeap->size;
