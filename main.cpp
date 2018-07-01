@@ -12,8 +12,11 @@ int main()
     
     for (int n = 0; n < MAX_NUMBER_OF_CASHIERS; n++) {
     	cashierPriority[n] = rand() % 100 + 1;
-    	cashierTimeToProcess[n] = rand() % 100 + 1;    	
+    	cashierTimeToProcess[n] = rand() % 100 + 1;
+		printf("pos %d - %d\n ", n , cashierPriority[n]);  	
 	}
+	
+	cout << "------------------------------------------MIN HEAP-----------------------------------------------\n ";
 
     struct MinHeap* minHeap = generateTreeMinHeap(cashierTimeToProcess, cashierPriority, MAX_NUMBER_OF_CASHIERS);
  
@@ -21,7 +24,7 @@ int main()
 
     while (i < MAX_NUMBER_OF_CASHIERS)
     {
-        printf("%d [%d]\n ", minHeap->array[i]->val, minHeap->array[i]->timeToProcess);
+        printf("pos %d - %d [%d]\n ", i ,minHeap->array[i]->val, minHeap->array[i]->timeToProcess);
         i++;
     }
     
