@@ -16,7 +16,7 @@ struct MinHeap
     struct Node **array;
 };
  
-//Criar novo nó
+//Criar novo nÃ³
 struct Node* newNode(int timeToProcess, int val)
 {
     struct Node* temp =
@@ -38,7 +38,7 @@ struct MinHeap* initMinHeap(int capacityMax)
     return minHeap;
 }
 
-// Faz a troca dos nós
+// Faz a troca dos nÃ³s
 void swapNode(struct Node** a, struct Node** b)
 {
     struct Node* t = *a;
@@ -46,7 +46,7 @@ void swapNode(struct Node** a, struct Node** b)
     *b = t;
 }
  
-// Promover ou Rebaixar o nó
+// Promover ou Rebaixar o nÃ³
 void promoteDemote(struct MinHeap* minHeap, int idx)
 {
     int parent = idx;
@@ -68,7 +68,7 @@ void promoteDemote(struct MinHeap* minHeap, int idx)
     }
 }
  
-// Inserir um novo nó
+// Inserir um novo nÃ³
 void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
 {
     ++minHeap->size;
@@ -79,6 +79,15 @@ void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
         i = (i - 1)/2;
     }
     minHeap->array[i] = Node;
+}
+
+void deleteMinHeap(struct MinHeap* minHeap)
+{
+	swapNode(&minHeap->array[0], &minHeap->array[minHeap->size-1]);
+	minHeap->array[minHeap->size-1] = NULL;
+	minHeap->size = minHeap->size-1;
+	
+	promoteDemote(minHeap, 0);
 }
  
 void buildMinHeap(struct MinHeap* minHeap)
@@ -97,13 +106,13 @@ void printArr(int arr[], int n)
     printf("\n");
 }
  
-// Verifica se o nó é uma folha
+// Verifica se o nÃ³ Ã© uma folha
 int isLeaf(struct Node* root)
 {
     return !(root->left) && !(root->right) ;
 }
  
-// Função para criar uma árvore Heap
+// FunÃ§Äƒo para criar uma Ã¡rvore Heap
 struct MinHeap* generateTreeMinHeap(int timeToProcess[], int val[], int size)
 {
     struct MinHeap* minHeap = initMinHeap(size);
