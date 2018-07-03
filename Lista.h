@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 
-int GerarCliente(){
+int GerarCliente(int capacityMax){
 
-    return (rand()%100000)+1;
+    return (rand()%capacityMax)+1;
 }
 /*
 //Essa função foi baseada na regra o numero de cliente precisa ser maior que o de caixa
