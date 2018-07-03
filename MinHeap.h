@@ -43,7 +43,7 @@ void promoteDemoteMinHeap(struct MinHeap* minHeap, int idx)
 }
  
 // Inserir um novo nó
-void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
+void pushMinHeap(struct MinHeap* minHeap, struct Node* Node)
 {
     ++minHeap->size;
     int i = minHeap->size - 1;
@@ -53,6 +53,22 @@ void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
         i = (i - 1)/2;
     }
     minHeap->array[i] = Node;
+}
+
+//Retira o menor elemento, inseri o maior elemento no topo e faz o balanceamento
+void popMinHeap(struct MinHeap* minHeap)
+{
+	swapNode(&minHeap->array[0], &minHeap->array[minHeap->size-1]);
+	minHeap->array[minHeap->size-1] = NULL;
+	minHeap->size = minHeap->size-1;
+	
+	promoteDemoteMinHeap(minHeap, 0);
+}
+
+//Retorna o menor nó da árvore
+Node* topMinHeap(struct MinHeap* minHeap)
+{
+	return minHeap->array[0];
 }
  
 void buildMinHeap(struct MinHeap* minHeap)
