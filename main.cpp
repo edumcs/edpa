@@ -1,7 +1,11 @@
 #include <iostream>
+#include<malloc.h>
 #include "MinHeap.h"
+#include "Lista.h"
 
 using namespace std;
+
+ fila *Cliente = (fila *) malloc(sizeof(fila));
 
 int main()
 {
@@ -22,11 +26,31 @@ int main()
  
     int i = 0;
 
-    while (i < MAX_NUMBER_OF_CASHIERS)
+  /*  while (i < MAX_NUMBER_OF_CASHIERS)
     {
         printf("pos %d - %d [%d]\n ", i ,minHeap->array[i]->val, minHeap->array[i]->timeToProcess);
         i++;
+    }*/
+    
+    int CL = GerarCliente(); // Gera a quantidade de Clientes
+    printf("\n\nNumero Clientes %d\n ", CL);
+	
+    if(!Cliente){
+        printf("Sem memoria disponivel!\n");
+        exit(1);
+    }else {
+        iniciaFila(Cliente);
     }
+    
+	preencheFila(Cliente, CL);  // preenche a fila com a quantidade de itens para cada cliente
+    exibeFila(Cliente, CL);  //se quiser mostrar a fila existente
+    
+    retiraCliente(Cliente);
+    
+    //mostrar a fila existente
+    exibeFila(Cliente, CL);  
+	
+    
     
     return 0;
 }
