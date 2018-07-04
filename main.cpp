@@ -10,17 +10,16 @@ using namespace std;
  fila *Cliente = (fila *) malloc(sizeof(fila));
 
 int main()
-{
-	const int MAX_NUMBER_OF_CASHIERS = 10000;
-	const int MAX_NUMBER_OF_CLIENTS = 10000;
+{	
+	int MAX_NUMBER_OF_CLIENTS =  rand() % 10000 + 1;
+	int MAX_NUMBER_OF_CASHIERS =  rand() % MAX_NUMBER_OF_CLIENTS + 1;
 	
     int cashierTimeToProcess[MAX_NUMBER_OF_CASHIERS];
     int cashierPriority[MAX_NUMBER_OF_CASHIERS];
     
     for (int n = 0; n < MAX_NUMBER_OF_CASHIERS; n++) {
     	cashierPriority[n] = rand() % 100 + 1;
-    	cashierTimeToProcess[n] = rand() % 100 + 1;
-		printf("pos %d - %d\n ", n , cashierPriority[n]);  	
+    	cashierTimeToProcess[n] = 0;	
 	}
 	
 	cout << "------------------------------------------MIN HEAP-----------------------------------------------\n ";
@@ -29,17 +28,14 @@ int main()
  
 	
     int i = 0;
-
+/*
     while (i < MAX_NUMBER_OF_CASHIERS)
     {
         printf("pos %d - %d [%d]\n ", i ,minHeap->array[i]->val, minHeap->array[i]->timeToProcess);
         i++;
     }
-	
+*/	
 	cout << "------------------------------------------LISTA-----------------------------------------------\n ";
-    
-    int CL = GerarCliente(MAX_NUMBER_OF_CLIENTS); // Gera a quantidade de Clientes
-    printf("\n\nNumero Clientes %d\n ", CL);
 	
     if(!Cliente){
         printf("Sem memoria disponivel!\n");
@@ -48,13 +44,10 @@ int main()
         iniciaFila(Cliente);
     }
     
-	preencheFila(Cliente, CL);  // preenche a fila com a quantidade de itens para cada cliente
-    exibeFila(Cliente, CL);  //se quiser mostrar a fila existente
+	preencheFila(Cliente, MAX_NUMBER_OF_CLIENTS);  // preenche a fila com a quantidade de itens para cada cliente
+//    exibeFila(Cliente, MAX_NUMBER_OF_CLIENTS);  //se quiser mostrar a fila existente
     
-    retiraCliente(Cliente);
-    
-    //mostrar a fila existente
-    exibeFila(Cliente, CL);  
+//    retiraCliente(Cliente);
 	
     cout << "------------------------------------------MAX HEAP-----------------------------------------------\n ";
 
@@ -64,7 +57,7 @@ int main()
 
     while(i < maxHeap->size)
     {
-        printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
+        //printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
         i++;
     }
     
@@ -80,9 +73,26 @@ int main()
     i=0;
     while (i < maxHeap->size)
     {
-        printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
+       // printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
         i++;
     }
     
     return 0;
 }
+
+void atendimento(MinHeap* filaCaixa, fila* cliente) {
+	while (client->prox != NULL) {
+		//Retirar caixa com prioridade
+		Node* caixa = topMinHeap(filaCaixa);
+		popMinHeap(filaCaixa);		
+		
+		//Inserir tempo de processamento
+		caixa->cost = cliente->QIT * caixa->val;
+		retiraCliente(cliente);
+		
+		
+		
+		
+	}
+}
+	

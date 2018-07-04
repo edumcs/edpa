@@ -3,7 +3,7 @@
 
 int GerarCliente(int capacityMax){
 
-    return (rand()%capacityMax)+1;
+    return (rand)%capacityMax)+1;
 }
 /*
 //Essa função foi baseada na regra o numero de cliente precisa ser maior que o de caixa
@@ -44,7 +44,7 @@ fila *GeraFila() {
     }else{
         novo->id=a+1;  //Gera id ;
         a=a+1; //incrementa id
-        novo->QIT = (rand()%10)+1; //Preenche com valor aleatorio com quantidade de itens;
+        novo->QIT = (rand()%100)+1; //Preenche com valor aleatorio com quantidade de itens;
         return novo;
     }
 }

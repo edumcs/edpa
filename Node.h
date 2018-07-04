@@ -4,6 +4,7 @@
 struct Node
 {
     int timeToProcess;
+    int id;
     int val;
     int cost;
     struct Node *left, *right;
