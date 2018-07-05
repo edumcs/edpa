@@ -6,13 +6,14 @@
 
 using namespace std;
 
-int atendimento(MinHeap* filaCaixa, fila* filaCliente) {
+int atendimento(MinHeap* filaCaixa, fila* filaCliente, int quantidadeClientes) {
 
 	struct MinHeap* filaCaixasOcupados = initMinHeap(filaCaixa->size);
 	int custo;
 	int tempo = 0;
+	int clientesProcessados = 0;
 
-	while (filaCliente->prox != NULL) {
+	while (clientesProcessados < quantidadeClientes) {
 		//Retirar caixa com prioridade
 		Node* caixa = topMinHeap(filaCaixa);
 		
@@ -31,18 +32,22 @@ int atendimento(MinHeap* filaCaixa, fila* filaCliente) {
 			if (caixaOcupado != NULL) {					
 				popMinHeap(filaCaixasOcupados);
 				
-				//Inserir tempo de processamento			
-				custo = filaCliente->prox->QIT * caixaOcupado->auxVal;
-				caixaOcupado->val += custo;
+				//Inserir tempo de processamento
+				if (filaCliente->prox != NULL) {
+					custo = filaCliente->prox->QIT * caixaOcupado->auxVal;
+					caixaOcupado->val += custo;
+				} 			
 				
 				if (tempo < caixaOcupado->val)	{
 					tempo = caixaOcupado->val;
 				}
 				
 				pushMinHeap(filaCaixasOcupados, caixaOcupado);
+				clientesProcessados++;
 			}	
-		}
-		retiraCliente(filaCliente);	
+		}		
+		
+		retiraCliente(filaCliente);
 	}
 	
 	cout << "------------------------------------------MIN HEAP-----------------------------------------------\n ";
@@ -65,8 +70,8 @@ int main()
     int cashierPriority[MAX_NUMBER_OF_CASHIERS];
     
     for (int n = 0; n < MAX_NUMBER_OF_CASHIERS; n++) {
-    	cashierPriority[n] = rand() % 100 + 1;	
-	}	
+    	cashierPriority[n] = rand() % 100 + 1;
+	}
 
     struct MinHeap* filaCaixa = generateTreeMinHeap(cashierPriority, MAX_NUMBER_OF_CASHIERS);
 	
@@ -76,8 +81,7 @@ int main()
     {
         printf("pos %d - %d\n ", i ,filaCaixa->array[i]->val);
         i++;
-    }
-	
+    }	
 	
 	fila *filaCliente = (fila *) malloc(sizeof(fila));
 	if(!filaCliente){
@@ -92,7 +96,7 @@ int main()
 	cout << "------------------------------------------CLIENTES-----------------------------------------------\n ";
 	exibeFila(filaCliente, MAX_NUMBER_OF_CLIENTS);
 	
-	int tempo = atendimento(filaCaixa, filaCliente);
+	int tempo = atendimento(filaCaixa, filaCliente, MAX_NUMBER_OF_CLIENTS);
 	printf("--> TEMPO: %d ", tempo);
     return 0;
 }
