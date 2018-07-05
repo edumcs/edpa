@@ -2,97 +2,100 @@
 #include<malloc.h>
 #include "Node.h"
 #include "MinHeap.h"
-#include "MaxHeap.h"
 #include "Lista.h"
 
 using namespace std;
 
- fila *Cliente = (fila *) malloc(sizeof(fila));
+int atendimento(MinHeap* filaCaixa, fila* filaCliente) {
 
-int main()
-{	
-	int MAX_NUMBER_OF_CLIENTS =  rand() % 10000 + 1;
-	int MAX_NUMBER_OF_CASHIERS =  rand() % MAX_NUMBER_OF_CLIENTS + 1;
-	
-    int cashierTimeToProcess[MAX_NUMBER_OF_CASHIERS];
-    int cashierPriority[MAX_NUMBER_OF_CASHIERS];
-    
-    for (int n = 0; n < MAX_NUMBER_OF_CASHIERS; n++) {
-    	cashierPriority[n] = rand() % 100 + 1;
-    	cashierTimeToProcess[n] = 0;	
+	struct MinHeap* filaCaixasOcupados = initMinHeap(filaCaixa->size);
+	int custo;
+	int tempo = 0;
+
+	while (filaCliente->prox != NULL) {
+		//Retirar caixa com prioridade
+		Node* caixa = topMinHeap(filaCaixa);
+		
+		if (caixa != NULL) {
+			popMinHeap(filaCaixa);		
+		
+			//Inserir tempo de processamento			
+			custo = filaCliente->prox->QIT * caixa->val;			
+			caixa->auxVal = caixa->val;			
+			caixa->val = custo;
+			
+			pushMinHeap(filaCaixasOcupados, caixa);
+		} else {
+			Node* caixaOcupado = topMinHeap(filaCaixasOcupados);
+			
+			if (caixaOcupado != NULL) {					
+				popMinHeap(filaCaixasOcupados);
+				
+				//Inserir tempo de processamento			
+				custo = filaCliente->prox->QIT * caixaOcupado->auxVal;
+				caixaOcupado->val += custo;
+				
+				if (tempo < caixaOcupado->val)	{
+					tempo = caixaOcupado->val;
+				}
+				
+				pushMinHeap(filaCaixasOcupados, caixaOcupado);
+			}	
+		}
+		retiraCliente(filaCliente);	
 	}
 	
 	cout << "------------------------------------------MIN HEAP-----------------------------------------------\n ";
+	int i = 0;
 
-    struct MinHeap* minHeap = generateTreeMinHeap(cashierTimeToProcess, cashierPriority, MAX_NUMBER_OF_CASHIERS);
- 
-	
-    int i = 0;
-/*
-    while (i < MAX_NUMBER_OF_CASHIERS)
+    while (i < filaCaixasOcupados->size)
     {
-        printf("pos %d - %d [%d]\n ", i ,minHeap->array[i]->val, minHeap->array[i]->timeToProcess);
+        printf("pos %d - %d [%d]\n ", i ,filaCaixasOcupados->array[i]->val, filaCaixasOcupados->array[i]->auxVal);
         i++;
     }
-*/	
-	cout << "------------------------------------------LISTA-----------------------------------------------\n ";
+    
+    return tempo;	
+}
+
+int main()
+{	
+	const int MAX_NUMBER_OF_CLIENTS =  7;//rand() % 10 + 1;
+	const int MAX_NUMBER_OF_CASHIERS =  3;//rand() % MAX_NUMBER_OF_CLIENTS + 1;
 	
-    if(!Cliente){
+    int cashierPriority[MAX_NUMBER_OF_CASHIERS];
+    
+    for (int n = 0; n < MAX_NUMBER_OF_CASHIERS; n++) {
+    	cashierPriority[n] = rand() % 100 + 1;	
+	}	
+
+    struct MinHeap* filaCaixa = generateTreeMinHeap(cashierPriority, MAX_NUMBER_OF_CASHIERS);
+	
+	int i = 0;
+
+    while (i < MAX_NUMBER_OF_CASHIERS)
+    {
+        printf("pos %d - %d\n ", i ,filaCaixa->array[i]->val);
+        i++;
+    }
+	
+	
+	fila *filaCliente = (fila *) malloc(sizeof(fila));
+	if(!filaCliente){
         printf("Sem memoria disponivel!\n");
         exit(1);
     }else {
-        iniciaFila(Cliente);
+        iniciaFila(filaCliente);
     }
     
-	preencheFila(Cliente, MAX_NUMBER_OF_CLIENTS);  // preenche a fila com a quantidade de itens para cada cliente
-//    exibeFila(Cliente, MAX_NUMBER_OF_CLIENTS);  //se quiser mostrar a fila existente
-    
-//    retiraCliente(Cliente);
+	preencheFila(filaCliente, MAX_NUMBER_OF_CLIENTS);
 	
-    cout << "------------------------------------------MAX HEAP-----------------------------------------------\n ";
-
-    struct MaxHeap* maxHeap = generateTreeMaxHeap(cashierTimeToProcess, cashierPriority, MAX_NUMBER_OF_CASHIERS);
- 
-    i = 0;
-
-    while(i < maxHeap->size)
-    {
-        //printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
-        i++;
-    }
-    
-    deleteMaxHeap(maxHeap);
-    printf("\n novo topo: %d\n", maxHeap->array[0]->cost);
-    deleteMaxHeap(maxHeap);
-    printf("\n novo topo: %d \n", maxHeap->array[0]->cost);
-    deleteMaxHeap(maxHeap);
-    printf("\n novo topo: %d \n", maxHeap->array[0]->cost);
-    
-    printf("\n Heap depois de 3 saidas: \n\n");
-    
-    i=0;
-    while (i < maxHeap->size)
-    {
-       // printf("pos %d - %d [%d] - cost: [%d]\n ", i ,maxHeap->array[i]->val, maxHeap->array[i]->timeToProcess, maxHeap->array[i]->cost);
-        i++;
-    }
-    
+	cout << "------------------------------------------CLIENTES-----------------------------------------------\n ";
+	exibeFila(filaCliente, MAX_NUMBER_OF_CLIENTS);
+	
+	int tempo = atendimento(filaCaixa, filaCliente);
+	printf("--> TEMPO: %d ", tempo);
     return 0;
 }
 
-void atendimento(MinHeap* filaCaixa, fila* cliente) {
-	while (client->prox != NULL) {
-		//Retirar caixa com prioridade
-		Node* caixa = topMinHeap(filaCaixa);
-		popMinHeap(filaCaixa);		
-		
-		//Inserir tempo de processamento
-		caixa->cost = cliente->QIT * caixa->val;
-		retiraCliente(cliente);
-		
-		
-		
-		
-	}
-}
+
 	

@@ -3,22 +3,20 @@
  
 struct Node
 {
-    int timeToProcess;
-    int id;
+	int id;
     int val;
-    int cost;
+    int auxVal;
     struct Node *left, *right;
 };
  
 //Criar novo nó
-struct Node* newNode(int timeToProcess, int val)
+struct Node* newNode(int id, int val)
 {
     struct Node* temp =
           (struct Node*) malloc(sizeof(struct Node));
     temp->left = temp->right = NULL;
-    temp->timeToProcess = timeToProcess;
     temp->val = val;
-    temp->cost = timeToProcess*val;
+    temp->auxVal = 0;
     return temp;
 }
 

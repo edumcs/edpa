@@ -3,7 +3,7 @@
 
 int GerarCliente(int capacityMax){
 
-    return (rand)%capacityMax)+1;
+    return rand() % capacityMax + 1;
 }
 /*
 //Essa função foi baseada na regra o numero de cliente precisa ser maior que o de caixa
@@ -50,7 +50,6 @@ fila *GeraFila() {
 }
 
 void preencheFila(fila *FILA, int x) {
-    printf(" a %d\n" , a);
     while (a < x) {
         fila *novo = GeraFila();
         novo->prox = NULL;

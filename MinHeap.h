@@ -88,11 +88,11 @@ void printArr(int arr[], int n)
 }
  
 // Função para criar uma árvore Heap
-struct MinHeap* generateTreeMinHeap(int timeToProcess[], int val[], int size)
+struct MinHeap* generateTreeMinHeap(int val[], int size)
 {
     struct MinHeap* minHeap = initMinHeap(size);
     for (int i = 0; i < size; ++i)
-        minHeap->array[i] = newNode(timeToProcess[i], val[i]);
+        minHeap->array[i] = newNode(i + 1, val[i]);
     minHeap->size = size;
     buildMinHeap(minHeap);
     return minHeap;
