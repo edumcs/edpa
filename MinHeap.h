@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
  
-struct Node
-{
-    int timeToProcess;
-    int val;
-    struct Node *left, *right;
-};
- 
 // Min Heap
 struct MinHeap
 {
@@ -15,17 +8,6 @@ struct MinHeap
     int capacityMax;
     struct Node **array;
 };
- 
-//Criar novo nó
-struct Node* newNode(int timeToProcess, int val)
-{
-    struct Node* temp =
-          (struct Node*) malloc(sizeof(struct Node));
-    temp->left = temp->right = NULL;
-    temp->timeToProcess = timeToProcess;
-    temp->val = val;
-    return temp;
-}
  
 struct MinHeap* initMinHeap(int capacityMax)
 {
@@ -38,16 +20,8 @@ struct MinHeap* initMinHeap(int capacityMax)
     return minHeap;
 }
 
-// Faz a troca dos nós
-void swapNode(struct Node** a, struct Node** b)
-{
-    struct Node* t = *a;
-    *a = *b;
-    *b = t;
-}
- 
 // Promover ou Rebaixar o nó
-void promoteDemote(struct MinHeap* minHeap, int idx)
+void promoteDemoteMinHeap(struct MinHeap* minHeap, int idx)
 {
     int parent = idx;
     int left = 2 * idx + 1;
@@ -64,12 +38,12 @@ void promoteDemote(struct MinHeap* minHeap, int idx)
     if (parent != idx)
     {
         swapNode(&minHeap->array[parent], &minHeap->array[idx]);
-        promoteDemote(minHeap, parent);
+        promoteDemoteMinHeap(minHeap, parent);
     }
 }
  
 // Inserir um novo nó
-void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
+void pushMinHeap(struct MinHeap* minHeap, struct Node* Node)
 {
     ++minHeap->size;
     int i = minHeap->size - 1;
@@ -80,13 +54,29 @@ void insertMinHeap(struct MinHeap* minHeap, struct Node* Node)
     }
     minHeap->array[i] = Node;
 }
+
+//Retira o menor elemento, inseri o maior elemento no topo e faz o balanceamento
+void popMinHeap(struct MinHeap* minHeap)
+{
+	swapNode(&minHeap->array[0], &minHeap->array[minHeap->size-1]);
+	minHeap->array[minHeap->size-1] = NULL;
+	minHeap->size = minHeap->size-1;
+	
+	promoteDemoteMinHeap(minHeap, 0);
+}
+
+//Retorna o menor nó da árvore
+Node* topMinHeap(struct MinHeap* minHeap)
+{
+	return minHeap->array[0];
+}
  
 void buildMinHeap(struct MinHeap* minHeap)
 {
     int n = minHeap->size - 1;
     int i;
     for (i = (n - 1) / 2; i >= 0; --i)
-        promoteDemote(minHeap, i);
+        promoteDemoteMinHeap(minHeap, i);
 }
  
 void printArr(int arr[], int n)
@@ -97,18 +87,12 @@ void printArr(int arr[], int n)
     printf("\n");
 }
  
-// Verifica se o nó é uma folha
-int isLeaf(struct Node* root)
-{
-    return !(root->left) && !(root->right) ;
-}
- 
 // Função para criar uma árvore Heap
-struct MinHeap* generateTreeMinHeap(int timeToProcess[], int val[], int size)
+struct MinHeap* generateTreeMinHeap(int val[], int size)
 {
     struct MinHeap* minHeap = initMinHeap(size);
     for (int i = 0; i < size; ++i)
-        minHeap->array[i] = newNode(timeToProcess[i], val[i]);
+        minHeap->array[i] = newNode(i + 1, val[i]);
     minHeap->size = size;
     buildMinHeap(minHeap);
     return minHeap;
