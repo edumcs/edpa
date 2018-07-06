@@ -59,6 +59,7 @@ int atendimento(MinHeap* filaCaixa, fila* filaCliente, int quantidadeClientes) {
         i++;
     }
     
+    free (filaCaixasOcupados);
     return tempo;	
 }
 
@@ -98,6 +99,9 @@ int main()
 	
 	int tempo = atendimento(filaCaixa, filaCliente, MAX_NUMBER_OF_CLIENTS);
 	printf("--> TEMPO: %d ", tempo);
+	
+	free (filaCliente);
+	free (filaCaixa);
     return 0;
 }
 
